@@ -1,24 +1,18 @@
 import 'package:flutter/material.dart';
 
-// estilos fixos do app focus 
+// estilos fixos do app focus
 const Color kPrimaryColor = Color(0xFFD9E8F8);
 const Color kSecondaryColor = Color(0xFFE9EEF5);
 const Color kButtonColor = Color(0xFF5A9DEE);
-
 
 const TextStyle kFocusTitleStyle = TextStyle(
   fontSize: 48,
   fontWeight: FontWeight.bold,
   color: kButtonColor,
   shadows: [
-    Shadow(
-      blurRadius: 10.0,
-      color: Colors.black26,
-      offset: Offset(4, 4),
-    ),
+    Shadow(blurRadius: 10.0, color: Colors.black26, offset: Offset(4, 4)),
   ],
 );
-
 
 const TextStyle kPageTitleStyle = TextStyle(
   fontSize: 32,
@@ -138,10 +132,7 @@ class LoginScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    'Cadastrar-se',
-                    style: TextStyle(color: kButtonColor),
-                  ),
+                  Text('Cadastrar-se', style: TextStyle(color: kButtonColor)),
                   const SizedBox(width: 8),
                   const Icon(Icons.accessibility_new, color: kButtonColor),
                 ],
@@ -193,10 +184,7 @@ class RedefinirSenhaScreen extends StatelessWidget {
             const Text(
               'Informe um e-mail e enviaremos um link para recuperação da sua senha',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 24),
             const Align(
@@ -265,7 +253,11 @@ class CadastroScreen extends StatelessWidget {
             _buildTextField(label: 'Nome:', hint: 'Nome'),
             _buildTextField(label: 'Usuário:', hint: 'Usuário'),
             _buildTextField(label: 'E-mail:', hint: 'E-mail'),
-            _buildTextField(label: 'Crie uma senha:', hint: 'Senha', obscureText: true),
+            _buildTextField(
+              label: 'Crie uma senha:',
+              hint: 'Senha',
+              obscureText: true,
+            ),
             const SizedBox(height: 40),
             Center(
               child: ElevatedButton(
@@ -299,13 +291,23 @@ class CadastroScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField({required String label, required String hint, bool obscureText = false}) {
+  Widget _buildTextField({
+    required String label,
+    required String hint,
+    bool obscureText = false,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black54)),
+          Text(
+            label,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.black54,
+            ),
+          ),
           const SizedBox(height: 8),
           TextField(
             obscureText: obscureText,
@@ -363,7 +365,11 @@ class MetasScreen extends StatelessWidget {
               const SizedBox(height: 20),
               const Center(child: Text('METAS', style: kPageTitleStyle)),
               const SizedBox(height: 40),
-              _buildMetaItem(context, 'Correr', onTap: () => Navigator.pushNamed(context, '/correr')),
+              _buildMetaItem(
+                context,
+                'Correr',
+                onTap: () => Navigator.pushNamed(context, '/correr'),
+              ),
               _buildMetaItem(context, 'Ler'),
               _buildMetaItem(context, 'Beber 2L água'),
               const Spacer(),
@@ -406,7 +412,11 @@ class MetasScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMetaItem(BuildContext context, String title, {VoidCallback? onTap}) {
+  Widget _buildMetaItem(
+    BuildContext context,
+    String title, {
+    VoidCallback? onTap,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: GestureDetector(
@@ -425,7 +435,10 @@ class MetasScreen extends StatelessWidget {
             ],
           ),
           child: CheckboxListTile(
-            title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+            title: Text(
+              title,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
             value: false,
             onChanged: (bool? value) {},
             activeColor: kButtonColor,
@@ -461,7 +474,10 @@ class AdicionarMetaScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const SizedBox(height: 20),
-            _buildTextField(label: 'Título da Meta:', hint: 'Ex: Ler 10 páginas'),
+            _buildTextField(
+              label: 'Título da Meta:',
+              hint: 'Ex: Ler 10 páginas',
+            ),
             _buildTextField(label: 'Prazo:', hint: 'Ex: 31/12/2025'),
             _buildTextField(label: 'Categoria:', hint: 'Ex: Saúde, Estudo...'),
             const SizedBox(height: 40),
@@ -476,7 +492,6 @@ class AdicionarMetaScreen extends StatelessWidget {
                   minimumSize: const Size(double.infinity, 50),
                 ),
                 onPressed: () {
-                  
                   Navigator.pop(context);
                 },
                 child: const Text(
@@ -491,13 +506,23 @@ class AdicionarMetaScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField({required String label, required String hint, bool obscureText = false}) {
+  Widget _buildTextField({
+    required String label,
+    required String hint,
+    bool obscureText = false,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black54)),
+          Text(
+            label,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.black54,
+            ),
+          ),
           const SizedBox(height: 8),
           TextField(
             obscureText: obscureText,
@@ -533,16 +558,8 @@ class MensagensScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
-          _buildMessageItem(
-            'Nome do Contato',
-            'Última mensagem...',
-            '10:30',
-          ),
-          _buildMessageItem(
-            'Amigo de Corrida',
-            'Bora correr hoje?',
-            'Ontem',
-          ),
+          _buildMessageItem('Nome do Contato', 'Última mensagem...', '10:30'),
+          _buildMessageItem('Amigo de Corrida', 'Bora correr hoje?', 'Ontem'),
           _buildMessageItem(
             'Grupo de Leitura',
             'Alguém terminou o livro?',
@@ -582,15 +599,15 @@ class MensagensScreen extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   message,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.black54,
-                  ),
+                  style: const TextStyle(fontSize: 14, color: Colors.black54),
                 ),
               ],
             ),
           ),
-          Text(time, style: const TextStyle(fontSize: 12, color: Colors.black45)),
+          Text(
+            time,
+            style: const TextStyle(fontSize: 12, color: Colors.black45),
+          ),
         ],
       ),
     );
@@ -638,9 +655,7 @@ class ConfiguracaoScreen extends StatelessWidget {
             const SizedBox(height: 24),
             _buildSettingsSection(
               title: 'Controle de privacidade',
-              items: [
-                'Controle de quem pode ver suas metas e progresso',
-              ],
+              items: ['Controle de quem pode ver suas metas e progresso'],
             ),
             const SizedBox(height: 24),
             _buildSettingsSection(
@@ -685,20 +700,22 @@ class ConfiguracaoScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
-        ...items.map((item) => Padding(
-              padding: const EdgeInsets.only(left: 16.0, top: 8.0),
-              child: InkWell(
-                onTap: () => onTapItem?.call(item),
-                child: Text(
-                  item,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.black54,
-                    fontWeight: FontWeight.bold,
-                  ),
+        ...items.map(
+          (item) => Padding(
+            padding: const EdgeInsets.only(left: 16.0, top: 8.0),
+            child: InkWell(
+              onTap: () => onTapItem?.call(item),
+              child: Text(
+                item,
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.black54,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-            )),
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -769,10 +786,7 @@ class PostagemScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back, color: kButtonColor),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          'Focus',
-          style: kPageTitleStyle,
-        ),
+        title: const Text('Focus', style: kPageTitleStyle),
         centerTitle: true,
       ),
       body: Container(
@@ -789,7 +803,10 @@ class PostagemScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 decoration: BoxDecoration(
                   color: kSecondaryColor,
                   borderRadius: BorderRadius.circular(20),
@@ -894,7 +911,10 @@ class PostagemScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: const Center(
-                child: Text('Placeholder para Livros/Imagem', textAlign: TextAlign.center),
+                child: Text(
+                  'Placeholder para Livros/Imagem',
+                  textAlign: TextAlign.center,
+                ),
               ),
             ),
           ],
@@ -957,7 +977,10 @@ class CorrerScreen extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Text(text, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            Text(
+              text,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
             const Spacer(),
             const Icon(Icons.keyboard_arrow_down, color: Colors.black54),
           ],
@@ -979,7 +1002,10 @@ class CorrerScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Icon(Icons.arrow_back_ios, color: Colors.black54, size: 16),
-              Text('AGOSTO 2024', style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(
+                'AGOSTO 2024',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               Icon(Icons.arrow_forward_ios, color: Colors.black54, size: 16),
             ],
           ),
@@ -988,7 +1014,11 @@ class CorrerScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Text('DOM', style: TextStyle(color: Colors.red)),
-              Text('SEG'), Text('TER'), Text('QUA'), Text('QUI'), Text('SEX'),
+              Text('SEG'),
+              Text('TER'),
+              Text('QUA'),
+              Text('QUI'),
+              Text('SEX'),
               Text('SAB', style: TextStyle(color: Colors.red)),
             ],
           ),
@@ -997,7 +1027,13 @@ class CorrerScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Text(' '), Text('1'), Text('2'), Text('3'), Text('4'), Text('5'), Text('6'),
+              Text(' '),
+              Text('1'),
+              Text('2'),
+              Text('3'),
+              Text('4'),
+              Text('5'),
+              Text('6'),
             ],
           ),
           SizedBox(height: 8),
@@ -1006,14 +1042,24 @@ class CorrerScreen extends StatelessWidget {
             children: [
               Text('7'),
               _DayCircle(text: '8', isSelected: true),
-              Text('9'), Text('10'), Text('11'), Text('12'), Text('13'),
+              Text('9'),
+              Text('10'),
+              Text('11'),
+              Text('12'),
+              Text('13'),
             ],
           ),
           SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Text('14'), Text('15'), Text('16'), Text('17'), Text('18'), Text('19'), Text('20'),
+              Text('14'),
+              Text('15'),
+              Text('16'),
+              Text('17'),
+              Text('18'),
+              Text('19'),
+              Text('20'),
             ],
           ),
         ],
@@ -1052,16 +1098,11 @@ class _DayCircle extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: isSelected
-          ? BoxDecoration(
-              color: kButtonColor,
-              shape: BoxShape.circle,
-            )
+          ? BoxDecoration(color: kButtonColor, shape: BoxShape.circle)
           : null,
       child: Text(
         text,
-        style: TextStyle(
-          color: isSelected ? Colors.white : Colors.black,
-        ),
+        style: TextStyle(color: isSelected ? Colors.white : Colors.black),
       ),
     );
   }
@@ -1097,6 +1138,10 @@ class PerfilScreen extends StatelessWidget {
         child: Column(
           children: <Widget>[
             const SizedBox(height: 20),
+
+            // ------------------------------------------------------------------
+            // ESTE É O BLOCO DO AVATAR QUE FOI CORRIGIDO:
+            // ------------------------------------------------------------------
             Container(
               width: 150,
               height: 150,
@@ -1111,28 +1156,49 @@ class PerfilScreen extends StatelessWidget {
                     offset: const Offset(0, 3),
                   ),
                 ],
-                image: const DecorationImage(
-                  image: AssetImage('assets/profile.png'),
+              ),
+              // Carrega a imagem do asset com o caminho CORRETO!
+              child: ClipOval(
+                child: Image.asset(
+                  'assets/imgs/biografia.jpg', // Caminho corrigido para 'imgs'!
                   fit: BoxFit.cover,
+                  width: 150,
+                  height: 150,
                 ),
               ),
-              child: const Icon(Icons.person, size: 80, color: kButtonColor),
             ),
+
+            // ------------------------------------------------------------------
             const SizedBox(height: 40),
             _buildTextField(label: 'Usuário:', initialValue: 'usuário_exemplo'),
             const SizedBox(height: 20),
-            _buildTextField(label: 'Sobre mim:', hint: 'Escreva um pouco sobre você...', maxLines: 5),
+            _buildTextField(
+              label: 'Sobre mim:',
+              hint: 'Escreva um pouco sobre você...',
+              maxLines: 5,
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildTextField({required String label, String? initialValue, String? hint, int maxLines = 1}) {
+  Widget _buildTextField({
+    required String label,
+    String? initialValue,
+    String? hint,
+    int maxLines = 1,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black54)),
+        Text(
+          label,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.black54,
+          ),
+        ),
         const SizedBox(height: 8),
         TextField(
           controller: TextEditingController(text: initialValue),
