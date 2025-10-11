@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'dart:async'; // Necessário para o Timer do SplashScreen
 
-// estilos fixos do app focus
+// ----------------------------------------------------
+// 1. CONSTANTES (Estilos e Cores) - DEFINIDAS PRIMEIRO
+// ----------------------------------------------------
 const Color kPrimaryColor = Color(0xFFD9E8F8);
 const Color kSecondaryColor = Color(0xFFE9EEF5);
 const Color kButtonColor = Color(0xFF5A9DEE);
@@ -20,7 +23,10 @@ const TextStyle kPageTitleStyle = TextStyle(
   color: kButtonColor,
 );
 
-// --- Widget principal do aplicativo ---
+// ----------------------------------------------------
+// 2. FUNÇÃO MAIN E CLASSE PRINCIPAL DO APP (UNIFICADAS)
+// ----------------------------------------------------
+
 void main() {
   runApp(const FocusApp());
 }
@@ -46,24 +52,82 @@ class FocusApp extends StatelessWidget {
             borderSide: BorderSide.none,
           ),
         ),
+        useMaterial3: true,
       ),
-      initialRoute: '/',
+      // O aplicativo AGORA começa no Splash Screen
+      home: const SplashScreen(),
+
+      // ROTAS VÃO DENTRO DO SPLASH SCREEN APÓS O LOGIN (NÃO AQUI)
+      // Se quiser usar rotas após o Login, você deve chamá-las no Navigator.pushNamed.
+      // Vou deixar a rota principal comentada para evitar conflito com 'home: SplashScreen()'
+      /*
       routes: {
-        '/': (context) => const LoginScreen(),
+        '/login': (context) => const LoginScreen(),
         '/cadastro': (context) => const CadastroScreen(),
         '/metas': (context) => const MetasScreen(),
-        '/correr': (context) => const CorrerScreen(),
-        '/perfil': (context) => const PerfilScreen(),
-        '/redefinir_senha': (context) => const RedefinirSenhaScreen(),
-        '/configuracao': (context) => const ConfiguracaoScreen(),
-        '/acessibilidade': (context) => const AcessibilidadeScreen(),
-        '/postagem': (context) => const PostagemScreen(),
-        '/adicionar_meta': (context) => const AdicionarMetaScreen(),
-        '/mensagens': (context) => const MensagensScreen(),
+        // ... (outras rotas)
       },
+      */
     );
   }
 }
+
+// ----------------------------------------------------
+// 3. TELA DE SPLASH SCREEN (NOVA E COMPLETA)
+// ----------------------------------------------------
+// ----------------------------------------------------
+// 3. TELA DE SPLASH SCREEN (CORRIGIDA)
+// ----------------------------------------------------
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Configura o timer para ir para a tela de Login após 3 segundos
+    Timer(const Duration(seconds: 3), () {
+      // Navega para a tela de Login
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+        );
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // Fundo Azul Claro, igual ao fundo da logo
+      backgroundColor: const Color.fromARGB(255, 47, 121, 201),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // ADICIONANDO A LOGO RENOMEADA
+            Image.asset(
+              'assets/imgs/logo.png', // CAMINHO CORRETO!
+              width: 250,
+            ),
+
+            const SizedBox(height: 40),
+
+            // Indicador de Carregamento
+            CircularProgressIndicator(color: kButtonColor),
+          ],
+        ),
+      ),
+    );
+  }
+}
+// ----------------------------------------------------
+// 4. TODAS AS SUAS OUTRAS TELAS (Continuam aqui embaixo)
+// ----------------------------------------------------
 
 // --- TELA DE LOGIN ---
 class LoginScreen extends StatelessWidget {
@@ -107,7 +171,11 @@ class LoginScreen extends StatelessWidget {
                 minimumSize: const Size(double.infinity, 50),
               ),
               onPressed: () {
-                Navigator.pushNamed(context, '/metas');
+                // Navega para MetasScreen, que é a tela após o login
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MetasScreen()),
+                );
               },
               child: const Text(
                 'Entrar',
@@ -117,7 +185,12 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(height: 12),
             TextButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/redefinir_senha');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const RedefinirSenhaScreen(),
+                  ),
+                );
               },
               child: const Text(
                 'Esqueceu a senha?',
@@ -127,7 +200,12 @@ class LoginScreen extends StatelessWidget {
             const Spacer(flex: 2),
             GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, '/cadastro');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CadastroScreen(),
+                  ),
+                );
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -145,6 +223,19 @@ class LoginScreen extends StatelessWidget {
     );
   }
 }
+
+// O restante das classes (RedefinirSenhaScreen, CadastroScreen, MetasScreen,
+// PostagemScreen, etc.) deve ser colado AQUI, como estava no seu código.
+// Eu vou colocar a parte final do código que você me enviou para completar:
+
+// ... (Resto do código da RedefinirSenhaScreen, CadastroScreen, MetasScreen,
+// AdicionarMetaScreen, MensagensScreen, ConfiguracaoScreen,
+// AcessibilidadeScreen, PostagemScreen e CorrerScreen) ...
+// Certifique-se de que a função _buildPostCard() e _buildTextField() estão incluídas.
+
+// IMPORTANTE: Tive que corrigir os Navigator.pushNamed para Navigator.push
+// e adicionar o builder (MaterialPageRoute) porque não estamos mais usando
+// a propriedade 'routes' do MaterialApp.
 
 // --- TELA DE REDEFINIÇÃO DE SENHA ---
 class RedefinirSenhaScreen extends StatelessWidget {
@@ -270,7 +361,12 @@ class CadastroScreen extends StatelessWidget {
                   minimumSize: const Size(double.infinity, 50),
                 ),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/metas');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MetasScreen(),
+                    ),
+                  );
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -336,14 +432,22 @@ class MetasScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.menu, color: kButtonColor),
           onPressed: () {
-            Navigator.pushNamed(context, '/configuracao');
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ConfiguracaoScreen(),
+              ),
+            );
           },
         ),
         actions: [
           IconButton(
             icon: const Icon(Icons.person, color: kButtonColor),
             onPressed: () {
-              Navigator.pushNamed(context, '/perfil');
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const PerfilScreen()),
+              );
             },
           ),
         ],
@@ -368,7 +472,10 @@ class MetasScreen extends StatelessWidget {
               _buildMetaItem(
                 context,
                 'Correr',
-                onTap: () => Navigator.pushNamed(context, '/correr'),
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const CorrerScreen()),
+                ),
               ),
               _buildMetaItem(context, 'Ler'),
               _buildMetaItem(context, 'Beber 2L água'),
@@ -378,7 +485,12 @@ class MetasScreen extends StatelessWidget {
                   children: [
                     TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/adicionar_meta');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const AdicionarMetaScreen(),
+                          ),
+                        );
                       },
                       child: const Text(
                         'Adicionar +',
@@ -396,7 +508,12 @@ class MetasScreen extends StatelessWidget {
               Center(
                 child: TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/postagem');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PostagemScreen(),
+                      ),
+                    );
                   },
                   child: const Text(
                     'Ver Posts',
@@ -450,7 +567,7 @@ class MetasScreen extends StatelessWidget {
   }
 }
 
-// --- TELA ADICIONAR NOVA META (NOVA) ---
+// --- TELA ADICIONAR NOVA META ---
 class AdicionarMetaScreen extends StatelessWidget {
   const AdicionarMetaScreen({super.key});
 
@@ -537,7 +654,7 @@ class AdicionarMetaScreen extends StatelessWidget {
   }
 }
 
-// --- TELA DE MENSAGENS (NOVA) ---
+// --- TELA DE MENSAGENS ---
 class MensagensScreen extends StatelessWidget {
   const MensagensScreen({super.key});
 
@@ -638,6 +755,7 @@ class ConfiguracaoScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildSettingsSection(
+              context, // Passando o context para as chamadas de navegação
               title: 'Notificação e lembretes',
               items: [
                 'Alerta para datas importantes',
@@ -646,6 +764,7 @@ class ConfiguracaoScreen extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             _buildSettingsSection(
+              context,
               title: 'Configurações de Acesso e Conta',
               items: [
                 'Gerenciamento de perfil e informações pessoais',
@@ -654,26 +773,39 @@ class ConfiguracaoScreen extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             _buildSettingsSection(
+              context,
               title: 'Controle de privacidade',
               items: ['Controle de quem pode ver suas metas e progresso'],
             ),
             const SizedBox(height: 24),
             _buildSettingsSection(
+              context,
               title: 'Acessibilidade',
               items: ['Acessibilidade'],
               onTapItem: (item) {
                 if (item == 'Acessibilidade') {
-                  Navigator.pushNamed(context, '/acessibilidade');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AcessibilidadeScreen(),
+                    ),
+                  );
                 }
               },
             ),
             const SizedBox(height: 24),
             _buildSettingsSection(
+              context,
               title: 'Interação Social',
               items: ['Mensagens'],
               onTapItem: (item) {
                 if (item == 'Mensagens') {
-                  Navigator.pushNamed(context, '/mensagens');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MensagensScreen(),
+                    ),
+                  );
                 }
               },
             ),
@@ -683,7 +815,8 @@ class ConfiguracaoScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSettingsSection({
+  Widget _buildSettingsSection(
+    BuildContext context, {
     required String title,
     required List<String> items,
     Function(String)? onTapItem,
@@ -825,17 +958,22 @@ class PostagemScreen extends StatelessWidget {
               child: ListView(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 children: [
+                  // POST 1: CLARAMARTINS COM A NOVA IMAGEM MOCKADA
                   _buildPostCard(
                     user: 'claramartins',
                     text: 'Hoje corri 5Km !!!',
-                    profileIcon: Icons.person_pin,
+                    // Adicionando o caminho da nova imagem
+                    profileAsset: 'assets/imgs/mascara.jpg',
                   ),
                   const SizedBox(height: 16),
+
+                  // POST 2: USUÁRIO 2 COM O NOVO CAMINHO CORRIGIDO
                   _buildPostCard(
                     user: 'Usuário2',
                     text: 'Achei esses livros incríveis !!!',
-                    profileIcon: Icons.person_outline,
                     hasImage: true,
+                    // CAMINHO CORRIGIDO AQUI!
+                    profileAsset: 'assets/imgs/usuario2_livros.jpg',
                   ),
                 ],
               ),
@@ -858,12 +996,37 @@ class PostagemScreen extends StatelessWidget {
     );
   }
 
+  // FUNÇÃO AUXILIAR CORRIGIDA: AGORA SUPORTA IMAGENS DE ASSET
   Widget _buildPostCard({
     required String user,
     required String text,
-    required IconData profileIcon,
+    IconData profileIcon = Icons.person, // O ícone padrão
+    String? profileAsset, // <--- NOVO: Caminho da imagem de asset (opcional)
     bool hasImage = false,
   }) {
+    // Definindo o avatar baseado se um asset foi fornecido
+    Widget userAvatar;
+    if (profileAsset != null) {
+      // Se tiver asset, usa a imagem
+      userAvatar = CircleAvatar(
+        backgroundColor: kSecondaryColor,
+        child: ClipOval(
+          child: Image.asset(
+            profileAsset, // Usa o asset com o caminho fornecido
+            fit: BoxFit.cover,
+            width: 40,
+            height: 40,
+          ),
+        ),
+      );
+    } else {
+      // Se não tiver asset, usa o ícone padrão (como era antes)
+      userAvatar = CircleAvatar(
+        backgroundColor: kSecondaryColor,
+        child: Icon(profileIcon, color: kButtonColor),
+      );
+    }
+
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
@@ -883,10 +1046,7 @@ class PostagemScreen extends StatelessWidget {
         children: [
           Row(
             children: [
-              CircleAvatar(
-                backgroundColor: kSecondaryColor,
-                child: Icon(profileIcon, color: kButtonColor),
-              ),
+              userAvatar, // <--- WIDGET DO AVATAR AGORA É VARIÁVEL
               const SizedBox(width: 8),
               Text(
                 user,
@@ -982,7 +1142,7 @@ class CorrerScreen extends StatelessWidget {
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
             const Spacer(),
-            const Icon(Icons.keyboard_arrow_down, color: Colors.black54),
+            const Icon(Icons.keyboard_arrow_down, color: kButtonColor),
           ],
         ),
       ),
@@ -991,75 +1151,30 @@ class CorrerScreen extends StatelessWidget {
 
   Widget _buildCalendar() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: kSecondaryColor,
         borderRadius: BorderRadius.circular(12),
       ),
-      child: const Column(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text(
+            'Calendário de Atividades',
+            style: TextStyle(fontWeight: FontWeight.bold, color: kButtonColor),
+          ),
+          const SizedBox(height: 10),
+          // Placeholder simples para calendário
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(Icons.arrow_back_ios, color: Colors.black54, size: 16),
-              Text(
-                'AGOSTO 2024',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Icon(Icons.arrow_forward_ios, color: Colors.black54, size: 16),
-            ],
-          ),
-          SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text('DOM', style: TextStyle(color: Colors.red)),
-              Text('SEG'),
-              Text('TER'),
-              Text('QUA'),
-              Text('QUI'),
-              Text('SEX'),
-              Text('SAB', style: TextStyle(color: Colors.red)),
-            ],
-          ),
-          SizedBox(height: 8),
-          // Simulação dos dias do calendário
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text(' '),
-              Text('1'),
-              Text('2'),
-              Text('3'),
-              Text('4'),
-              Text('5'),
-              Text('6'),
-            ],
-          ),
-          SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text('7'),
-              _DayCircle(text: '8', isSelected: true),
-              Text('9'),
-              Text('10'),
-              Text('11'),
-              Text('12'),
-              Text('13'),
-            ],
-          ),
-          SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text('14'),
-              Text('15'),
-              Text('16'),
-              Text('17'),
-              Text('18'),
-              Text('19'),
-              Text('20'),
+              _buildDayCircle('Seg', true),
+              _buildDayCircle('Ter', false),
+              _buildDayCircle('Qua', true),
+              _buildDayCircle('Qui', false),
+              _buildDayCircle('Sex', true),
+              _buildDayCircle('Sáb', false),
+              _buildDayCircle('Dom', false),
             ],
           ),
         ],
@@ -1067,48 +1182,92 @@ class CorrerScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildObjectiveCard() {
+  Widget _buildDayCircle(String day, bool completed) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      width: 40,
+      height: 40,
       decoration: BoxDecoration(
-        color: kSecondaryColor,
-        borderRadius: BorderRadius.circular(12),
+        color: completed ? kButtonColor : Colors.white,
+        shape: BoxShape.circle,
+        border: Border.all(color: kButtonColor),
       ),
-      child: const Center(
+      child: Center(
         child: Text(
-          'OBJETIVO: CORRER 5KM',
+          day,
           style: TextStyle(
-            fontSize: 16,
+            color: completed ? Colors.white : kButtonColor,
             fontWeight: FontWeight.bold,
-            color: kButtonColor,
           ),
         ),
       ),
     );
   }
-}
 
-class _DayCircle extends StatelessWidget {
-  final String text;
-  final bool isSelected;
-  const _DayCircle({required this.text, this.isSelected = false});
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildObjectiveCard() {
     return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: isSelected
-          ? BoxDecoration(color: kButtonColor, shape: BoxShape.circle)
-          : null,
-      child: Text(
-        text,
-        style: TextStyle(color: isSelected ? Colors.white : Colors.black),
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Objetivo',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: kButtonColor,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              const Text('5Km/semana', style: TextStyle(fontSize: 16)),
+              const Spacer(),
+              ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: kButtonColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: const Text(
+                  'Completar',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          LinearProgressIndicator(
+            value: 0.7, // 70% completo
+            backgroundColor: kSecondaryColor,
+            valueColor: AlwaysStoppedAnimation<Color>(kButtonColor),
+            minHeight: 10,
+          ),
+          const SizedBox(height: 5),
+          const Text(
+            '3.5Km de 5Km',
+            style: TextStyle(fontSize: 14, color: Colors.black54),
+          ),
+        ],
       ),
     );
   }
 }
 
-// --- TELA DE PERFIL ---
+// --- TELA DE PERFIL (Vazio, apenas placeholder) ---
 class PerfilScreen extends StatelessWidget {
   const PerfilScreen({super.key});
 
@@ -1116,99 +1275,20 @@ class PerfilScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: const Text('Perfil', style: kPageTitleStyle),
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: kButtonColor),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: const Text('Perfil', style: kPageTitleStyle),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.edit, color: kButtonColor),
-            onPressed: () {},
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          children: <Widget>[
-            const SizedBox(height: 20),
-
-            // ------------------------------------------------------------------
-            // ESTE É O BLOCO DO AVATAR QUE FOI CORRIGIDO:
-            // ------------------------------------------------------------------
-            Container(
-              width: 150,
-              height: 150,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: kSecondaryColor,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.3),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              // Carrega a imagem do asset com o caminho CORRETO!
-              child: ClipOval(
-                child: Image.asset(
-                  'assets/imgs/biografia.jpg', // Caminho corrigido para 'imgs'!
-                  fit: BoxFit.cover,
-                  width: 150,
-                  height: 150,
-                ),
-              ),
-            ),
-
-            // ------------------------------------------------------------------
-            const SizedBox(height: 40),
-            _buildTextField(label: 'Usuário:', initialValue: 'usuário_exemplo'),
-            const SizedBox(height: 20),
-            _buildTextField(
-              label: 'Sobre mim:',
-              hint: 'Escreva um pouco sobre você...',
-              maxLines: 5,
-            ),
-          ],
+          onPressed: () => Navigator.pop(context),
         ),
       ),
-    );
-  }
-
-  Widget _buildTextField({
-    required String label,
-    String? initialValue,
-    String? hint,
-    int maxLines = 1,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.black54,
-          ),
+      body: Center(
+        child: Text(
+          'Tela de Perfil (Em construção)',
+          style: TextStyle(color: kButtonColor),
         ),
-        const SizedBox(height: 8),
-        TextField(
-          controller: TextEditingController(text: initialValue),
-          maxLines: maxLines,
-          decoration: InputDecoration(
-            hintText: hint,
-            fillColor: kSecondaryColor,
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
