@@ -12,6 +12,7 @@ const TextStyle kFocusTitleStyle = TextStyle(
   fontSize: 48,
   fontWeight: FontWeight.bold,
   color: kButtonColor,
+  fontFamily: 'Roboto',
   shadows: [
     Shadow(blurRadius: 10.0, color: Colors.black26, offset: Offset(4, 4)),
   ],
@@ -40,7 +41,7 @@ class FocusApp extends StatelessWidget {
       title: 'Focus App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: 'Montserrat', // Uma fonte similar ao design
+        fontFamily: 'Roboto', // Uma fonte similar ao design
         scaffoldBackgroundColor: Colors.white,
         primaryColor: kPrimaryColor,
         inputDecorationTheme: InputDecorationTheme(
@@ -73,9 +74,6 @@ class FocusApp extends StatelessWidget {
 }
 
 // ----------------------------------------------------
-// 3. TELA DE SPLASH SCREEN (NOVA E COMPLETA)
-// ----------------------------------------------------
-// ----------------------------------------------------
 // 3. TELA DE SPLASH SCREEN (CORRIGIDA)
 // ----------------------------------------------------
 class SplashScreen extends StatefulWidget {
@@ -104,7 +102,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       // Fundo Azul Claro, igual ao fundo da logo
-      backgroundColor: const Color.fromARGB(255, 47, 121, 201),
+      backgroundColor: const Color(0xFF8AB9EF),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -136,14 +134,17 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kPrimaryColor,
+      backgroundColor: const Color(0xFF8AB9EF),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Spacer(flex: 2),
-            const Text('Focus', style: kFocusTitleStyle),
+            Image.asset(
+              'assets/imgs/logo.png',
+              height: 80,
+            ),
             const Spacer(flex: 1),
             const SizedBox(height: 20),
             const TextField(
@@ -194,7 +195,7 @@ class LoginScreen extends StatelessWidget {
               },
               child: const Text(
                 'Esqueceu a senha?',
-                style: TextStyle(color: kButtonColor),
+                style: TextStyle(color: Color(0xFF3C7ECD)),
               ),
             ),
             const Spacer(flex: 2),
@@ -210,7 +211,7 @@ class LoginScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Cadastrar-se', style: TextStyle(color: kButtonColor)),
+                  Text('Cadastrar-se', style: TextStyle(color: Color(0xFF3C7ECD))),
                   const SizedBox(width: 8),
                   const Icon(Icons.accessibility_new, color: kButtonColor),
                 ],
@@ -332,8 +333,16 @@ class CadastroScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: const Text('Focus', style: kPageTitleStyle),
+        // --- MUDANÇA AQUI: Substituindo o Text pela Imagem ---
+        title: Image.asset(
+          'assets/imgs/logo_cadastro.png', // O caminho da sua logo
+          height: 60, // Ajuste o tamanho para caber bem na AppBar
+          //AJUSTAR COM NALANDA
+        ),
+        // Removido o 'centerTitle: true' se a logo for ficar à esquerda,
+        // mas vamos manter para centralizar a imagem:
         centerTitle: true,
+        // -----------------------------------------------------
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),

@@ -58,5 +58,6 @@ flutter:
   # Para adicionar assets à sua aplicação, adicione uma seção assets AQUI:
   assets:
     - assets/imgs/ # Esta linha inclui TODOS os arquivos dentro da pasta 'assets/imgs'
+
     
   
