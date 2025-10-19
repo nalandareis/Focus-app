@@ -127,41 +127,69 @@ class _SplashScreenState extends State<SplashScreen> {
 // 4. TODAS AS SUAS OUTRAS TELAS (Continuam aqui embaixo)
 // ----------------------------------------------------
 
-// --- TELA DE LOGIN ---
+// --- TELA DE LOGIN (ATUALIZADA com Botão Equipe) ---
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
+
+  // Função auxiliar para criar os campos de texto estilizados
+  InputDecoration _customInputDecoration(String hint) {
+    return InputDecoration(
+      hintText: hint,
+      filled: true,
+      fillColor: kSecondaryColor,
+      contentPadding: const EdgeInsets.symmetric(
+        vertical: 16.0,
+        horizontal: 20.0,
+      ),
+
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15.0),
+        borderSide: BorderSide.none,
+      ),
+
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15.0),
+        borderSide: const BorderSide(color: kButtonColor, width: 2.0),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15.0),
+        borderSide: BorderSide.none,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF8AB9EF),
+      backgroundColor: const Color(0xFF8AB9EF), // Fundo Azul Médio
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Spacer(flex: 2),
-            Image.asset(
-              'assets/imgs/logo.png',
-              height: 80,
-            ),
+            // Logo
+            Image.asset('assets/imgs/logo.png', height: 80),
             const Spacer(flex: 1),
             const SizedBox(height: 20),
-            const TextField(
-              decoration: InputDecoration(
-                hintText: 'E-mail',
-                fillColor: kSecondaryColor,
-              ),
+
+            // Campo E-MAIL
+            TextField(
+              decoration: _customInputDecoration('E-mail'),
+              keyboardType: TextInputType.emailAddress,
             ),
+
             const SizedBox(height: 16),
-            const TextField(
-              decoration: InputDecoration(
-                hintText: 'Senha',
-                fillColor: kSecondaryColor,
-              ),
+
+            // Campo SENHA
+            TextField(
+              decoration: _customInputDecoration('Senha'),
               obscureText: true,
             ),
+
             const SizedBox(height: 24),
+
+            // Botão ENTRAR
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: kButtonColor,
@@ -172,7 +200,6 @@ class LoginScreen extends StatelessWidget {
                 minimumSize: const Size(double.infinity, 50),
               ),
               onPressed: () {
-                // Navega para MetasScreen, que é a tela após o login
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const MetasScreen()),
@@ -180,10 +207,17 @@ class LoginScreen extends StatelessWidget {
               },
               child: const Text(
                 'Entrar',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
+
             const SizedBox(height: 12),
+
+            // Botão Esqueceu a senha?
             TextButton(
               onPressed: () {
                 Navigator.push(
@@ -195,10 +229,36 @@ class LoginScreen extends StatelessWidget {
               },
               child: const Text(
                 'Esqueceu a senha?',
-                style: TextStyle(color: Color(0xFF3C7ECD)),
+                style: TextStyle(
+                  color: Color(0xFF3C7ECD),
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
-            const Spacer(flex: 2),
+
+            const Spacer(
+              flex: 1,
+            ), // Reduzi o espaçador aqui para caber o novo botão
+            // NOVO BOTÃO: CONHEÇA A EQUIPE
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const EquipeScreen()),
+                );
+              },
+              child: const Text(
+                'Conheça a Equipe',
+                style: TextStyle(
+                  color: kButtonColor,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+
+            const Spacer(flex: 1), // Espaçador
+            // Link Cadastrar-se
             GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -208,12 +268,19 @@ class LoginScreen extends StatelessWidget {
                   ),
                 );
               },
-              child: Row(
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Cadastrar-se', style: TextStyle(color: Color(0xFF3C7ECD))),
-                  const SizedBox(width: 8),
-                  const Icon(Icons.accessibility_new, color: kButtonColor),
+                  Text(
+                    'Cadastrar-se',
+                    style: TextStyle(
+                      color: Color(0xFF3C7ECD),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(width: 8),
+                  Icon(Icons.accessibility_new, color: kButtonColor),
                 ],
               ),
             ),
@@ -1276,13 +1343,41 @@ class CorrerScreen extends StatelessWidget {
   }
 }
 
-// --- TELA DE PERFIL (Vazio, apenas placeholder) ---
+// --- TELA DE PERFIL (VERSÃO EDITÁVEL E COMPLETA) ---
 class PerfilScreen extends StatelessWidget {
   const PerfilScreen({super.key});
 
+  // Função auxiliar para criar a decoração estilizada dos campos
+  InputDecoration _perfilInputDecoration(String label) {
+    return InputDecoration(
+      labelText: label,
+      labelStyle: const TextStyle(color: kButtonColor, fontSize: 18),
+      filled: true,
+      fillColor: kSecondaryColor, // Azul claro do fundo
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: 16.0,
+        vertical: 12.0,
+      ),
+
+      // Borda padrão
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12.0),
+        borderSide: BorderSide.none, // Borda sutil
+      ),
+      // Borda quando focado
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12.0),
+        borderSide: const BorderSide(color: kButtonColor, width: 2.0),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Você precisaria de um StatefulWidget para salvar,
+    // mas usaremos StatelessWidget por enquanto para manter o layout
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Perfil', style: kPageTitleStyle),
         backgroundColor: Colors.white,
@@ -1291,11 +1386,234 @@ class PerfilScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios, color: kButtonColor),
           onPressed: () => Navigator.pop(context),
         ),
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 16.0),
+            child: Icon(Icons.edit, color: kButtonColor),
+          ),
+        ],
       ),
-      body: Center(
-        child: Text(
-          'Tela de Perfil (Em construção)',
-          style: TextStyle(color: kButtonColor),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+        child: Column(
+          children: [
+            const SizedBox(height: 30),
+
+            // Avatar
+            CircleAvatar(
+              radius: 60,
+              backgroundColor: kPrimaryColor,
+              child: ClipOval(
+                child: Image.asset(
+                  'assets/imgs/biografia.jpg',
+                  fit: BoxFit.cover,
+                  width: 120,
+                  height: 120,
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // --- CAMPO NOME DE USUÁRIO (EDITÁVEL) ---
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: TextFormField(
+                // Use o valor inicial para mostrar 'Nome do Usuário'
+                initialValue: 'Nome do Usuário',
+                decoration: _perfilInputDecoration('Usuário'),
+                style: const TextStyle(fontSize: 18),
+                onChanged: (value) {
+                  // Aqui você faria algo para salvar o valor digitado
+                },
+              ),
+            ),
+
+            // --- CAMPO SOBRE MIM (EDITÁVEL, MÚLTIPLAS LINHAS) ---
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: TextFormField(
+                initialValue: 'Escreva aqui sobre suas metas e paixões!',
+                decoration: _perfilInputDecoration('Sobre mim'),
+                style: const TextStyle(fontSize: 18),
+                maxLines: 5, // Permite 5 linhas
+                minLines: 3,
+                onChanged: (value) {
+                  // Aqui você faria algo para salvar o valor digitado
+                },
+              ),
+            ),
+
+            const SizedBox(height: 30),
+
+            // Botão de Salvar
+            ElevatedButton(
+              onPressed: () {
+                // Ação para salvar/editar perfil (precisaria de State para funcionar)
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: kButtonColor,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 30,
+                  vertical: 15,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: const Text(
+                'Salvar Alterações',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            const SizedBox(height: 30),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ----------------------------------------------------
+// NOVO! TELA CONHEÇA A EQUIPE
+// ----------------------------------------------------
+
+// Widget auxiliar para construir o card de cada membro da equipe
+Widget _buildTeamMemberCard({
+  required String name,
+  required String role,
+  required String contribution,
+  required String photoAsset, // NOVO: Caminho do asset da foto
+}) {
+  const TextStyle nameStyle = TextStyle(
+    color: Color.fromARGB(255, 18, 75, 144),
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+  );
+  const TextStyle detailStyle = TextStyle(
+    color: Colors.black,
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+  );
+
+  return Container(
+    margin: const EdgeInsets.symmetric(vertical: 10),
+    padding: const EdgeInsets.all(16),
+    decoration: BoxDecoration(
+      color: kSecondaryColor, // Fundo azul claro
+      borderRadius: BorderRadius.circular(15),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.1),
+          blurRadius: 5,
+          offset: const Offset(0, 3),
+        ),
+      ],
+    ),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // SUBSTITUIÇÃO AQUI: De Icon para Image.asset
+        CircleAvatar(
+          radius: 35,
+          backgroundColor: Colors.white,
+          child: ClipOval(
+            child: Image.asset(
+              photoAsset, // Usa o caminho passado
+              fit: BoxFit.cover,
+              width: 70, // Duas vezes o radius (35*2)
+              height: 70,
+            ),
+          ),
+        ),
+        const SizedBox(width: 15),
+
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(name, style: nameStyle),
+              const SizedBox(height: 5),
+              Text(role, style: detailStyle),
+              const Text('Curso: ADS', style: detailStyle),
+              const Text('Período: 4º Período', style: detailStyle),
+              const SizedBox(height: 10),
+              Text('Contribuição: $contribution', style: detailStyle),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+class EquipeScreen extends StatelessWidget {
+  const EquipeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: kPrimaryColor,
+      appBar: AppBar(
+        title: const Text('Equipe', style: kPageTitleStyle),
+        backgroundColor: kPrimaryColor,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: kButtonColor),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+          
+
+            // Card da Camyla (NOVO CHAMADO COM O CAMINHO DA FOTO)
+            _buildTeamMemberCard(
+              name: 'CAMYLA ANDRADE',
+              role: 'Co-Fundadora & Desenvolvedora',
+              contribution:
+                  'Desenvolvimento do APP, Experiência do Usuário (UX) e Design de Interfaces (UI).',
+              photoAsset: 'assets/imgs/CAMYLA.jpg', // VERIFIQUE O NOME AQUI!
+            ),
+
+            // Card da Nalanda (NOVO CHAMADO COM O CAMINHO DA FOTO)
+            _buildTeamMemberCard(
+              name: 'NALANDA REIS',
+              role: 'Co-Fundadora & Desenvolvedora',
+              contribution:
+                  'Desenvolvimento do APP, e Design.',
+              photoAsset: 'assets/imgs/NALANDA.jpg', // VERIFIQUE O NOME AQUI!
+            ),
+
+            const SizedBox(height: 40),
+
+            // Rodapé
+            Center(
+              child: Column(
+                children: [
+                  const Text(
+                    '© 2025 App Focus.',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Text(
+                    'Desenvolvido por Camyla e Nalanda.',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
