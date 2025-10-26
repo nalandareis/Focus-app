@@ -250,7 +250,7 @@ class LoginScreen extends StatelessWidget {
               child: const Text(
                 'Conheça a Equipe',
                 style: TextStyle(
-                  color: kButtonColor,
+                  color: Color(0xFF3C7ECD),
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
@@ -501,9 +501,12 @@ class MetasScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      // 1. Torna o corpo da tela visível por trás da AppBar
+      extendBodyBehindAppBar: true,
+
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        // 2. Remove a cor de fundo da AppBar
+        backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.menu, color: kButtonColor),
@@ -518,23 +521,34 @@ class MetasScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.person, color: kButtonColor),
+            // --- AQUI É ONDE A MUDANÇA OCORRE ---
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const PerfilScreen()),
               );
             },
+            icon: CircleAvatar(
+              radius: 18, // Ajuste o raio conforme necessário para caber na AppBar
+              backgroundColor: Colors.white, // Fundo do avatar, pode ser transparente ou uma cor
+              child: ClipOval(
+                child: Image.asset(
+                  'assets/imgs/biografia.jpg', // **SEU CAMINHO DA IMAGEM DE PERFIL AQUI**
+                  fit: BoxFit.cover,
+                  width: 36, // Deve ser o dobro do raio
+                  height: 36, // Deve ser o dobro do raio
+                ),
+              ),
+            ),
           ),
         ],
       ),
       body: Container(
+        // Configuração da Imagem de Fundo
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Colors.white, kPrimaryColor],
-            stops: [0.0, 1.0],
+          image: DecorationImage(
+            image: AssetImage('assets/imgs/index.png'),
+            fit: BoxFit.cover, // Preenche todo o espaço
           ),
         ),
         child: Padding(
@@ -542,9 +556,13 @@ class MetasScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const SizedBox(height: 20),
+              // Adicione um Padding ou SizedBox maior aqui para evitar que o texto fique
+              // escondido atrás da AppBar transparente.
+              const SizedBox(height: 100),
+
               const Center(child: Text('METAS', style: kPageTitleStyle)),
               const SizedBox(height: 40),
+
               _buildMetaItem(
                 context,
                 'Correr',
@@ -555,7 +573,9 @@ class MetasScreen extends StatelessWidget {
               ),
               _buildMetaItem(context, 'Ler'),
               _buildMetaItem(context, 'Beber 2L água'),
+
               const Spacer(),
+
               Center(
                 child: Column(
                   children: [
@@ -606,17 +626,18 @@ class MetasScreen extends StatelessWidget {
   }
 
   Widget _buildMetaItem(
-    BuildContext context,
-    String title, {
-    VoidCallback? onTap,
-  }) {
+      BuildContext context,
+      String title, {
+        VoidCallback? onTap,
+      }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: GestureDetector(
         onTap: onTap,
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            // Camada branca semi-transparente para garantir a legibilidade do texto
+            color: Colors.white.withOpacity(0.9),
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
@@ -650,50 +671,64 @@ class AdicionarMetaScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      // 1. Torna o corpo da tela visível por trás da AppBar
+      extendBodyBehindAppBar: true,
+
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        // 2. Remove a cor de fundo da AppBar
+        backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: kButtonColor),
           onPressed: () => Navigator.pop(context),
         ),
+        // Certifique-se de que o estilo do título (kPageTitleStyle) tem uma cor que se destaca no fundo
         title: const Text('Nova Meta', style: kPageTitleStyle),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const SizedBox(height: 20),
-            _buildTextField(
-              label: 'Título da Meta:',
-              hint: 'Ex: Ler 10 páginas',
-            ),
-            _buildTextField(label: 'Prazo:', hint: 'Ex: 31/12/2025'),
-            _buildTextField(label: 'Categoria:', hint: 'Ex: Saúde, Estudo...'),
-            const SizedBox(height: 40),
-            Center(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: kButtonColor,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+      body: Container(
+        // 3. Adiciona a Imagem de Fundo
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/imgs/index.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: SingleChildScrollView(
+          // Adiciona padding na parte superior para que o conteúdo não fique sob a AppBar
+          padding: const EdgeInsets.fromLTRB(24.0, 100.0, 24.0, 24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              // Conteúdo da tela
+              _buildTextField(
+                label: 'Título da Meta:',
+                hint: 'Ex: Ler 10 páginas',
+              ),
+              _buildTextField(label: 'Prazo:', hint: 'Ex: 31/12/2025'),
+              _buildTextField(label: 'Categoria:', hint: 'Ex: Saúde, Estudo...'),
+              const SizedBox(height: 40),
+              Center(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: kButtonColor,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    minimumSize: const Size(double.infinity, 50),
                   ),
-                  minimumSize: const Size(double.infinity, 50),
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text(
-                  'Criar Meta',
-                  style: TextStyle(color: Colors.white),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text(
+                    'Criar Meta',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -713,7 +748,7 @@ class AdicionarMetaScreen extends StatelessWidget {
             label,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
-              color: Colors.black54,
+              color: Colors.black, // Cor do label forte para o fundo
             ),
           ),
           const SizedBox(height: 8),
@@ -721,7 +756,21 @@ class AdicionarMetaScreen extends StatelessWidget {
             obscureText: obscureText,
             decoration: InputDecoration(
               hintText: hint,
-              fillColor: kSecondaryColor,
+              // Mantenha o preenchimento, mas adicione opacidade para legibilidade
+              filled: true,
+              fillColor: Colors.white.withOpacity(0.9),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.0),
+                borderSide: BorderSide.none,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.0),
+                borderSide: BorderSide.none,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.0),
+                borderSide: const BorderSide(color: kButtonColor, width: 2.0),
+              ),
             ),
           ),
         ],
@@ -987,28 +1036,35 @@ class PostagemScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      // 1. Torna o corpo da tela visível por trás da AppBar
+      extendBodyBehindAppBar: true,
+
       appBar: AppBar(
-        backgroundColor: kPrimaryColor,
+        // 2. Remove a cor de fundo da AppBar
+        backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: kButtonColor),
           onPressed: () => Navigator.pop(context),
         ),
+        // Certifique-se de que o kPageTitleStyle usa uma cor legível (ex: branco ou preto)
         title: const Text('Focus', style: kPageTitleStyle),
         centerTitle: true,
       ),
       body: Container(
+        // 3. Adiciona a Imagem de Fundo
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Colors.white, kPrimaryColor],
-            stops: [0.0, 1.0],
+          image: DecorationImage(
+            image: AssetImage('assets/imgs/index.png'),
+            fit: BoxFit.cover,
           ),
         ),
         child: Column(
           children: [
+            // Adiciona um espaçamento para o conteúdo começar abaixo da AppBar transparente
+            const SizedBox(height: 100),
+
+            // --- CAMPO DE ESCRITA ---
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Container(
@@ -1017,7 +1073,8 @@ class PostagemScreen extends StatelessWidget {
                   vertical: 8,
                 ),
                 decoration: BoxDecoration(
-                  color: kSecondaryColor,
+                  // 4. Cor semi-transparente para o campo de texto
+                  color: Colors.white.withOpacity(0.85),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: const TextField(
@@ -1025,30 +1082,30 @@ class PostagemScreen extends StatelessWidget {
                   decoration: InputDecoration(
                     hintText: 'Escreva algo...',
                     border: InputBorder.none,
-                    suffixIcon: Icon(Icons.more_horiz),
+                    suffixIcon: Icon(Icons.more_horiz, color: kButtonColor),
                   ),
                 ),
               ),
             ),
+
+            // --- LISTA DE POSTAGENS ---
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 children: [
-                  // POST 1: CLARAMARTINS COM A NOVA IMAGEM MOCKADA
+                  // POST 1: CLARAMARTINS
                   _buildPostCard(
                     user: 'claramartins',
                     text: 'Hoje corri 5Km !!!',
-                    // Adicionando o caminho da nova imagem
                     profileAsset: 'assets/imgs/mascara.jpg',
                   ),
                   const SizedBox(height: 16),
 
-                  // POST 2: USUÁRIO 2 COM O NOVO CAMINHO CORRIGIDO
+                  // POST 2: USUÁRIO 2
                   _buildPostCard(
                     user: 'Usuário2',
                     text: 'Achei esses livros incríveis !!!',
                     hasImage: true,
-                    // CAMINHO CORRIGIDO AQUI!
                     profileAsset: 'assets/imgs/usuario2_livros.jpg',
                   ),
                 ],
@@ -1057,8 +1114,11 @@ class PostagemScreen extends StatelessWidget {
           ],
         ),
       ),
+
+      // --- BARRA INFERIOR ---
+      // Mantendo o estilo original aqui, mas você pode querer torná-lo semi-transparente
       bottomNavigationBar: Container(
-        color: kPrimaryColor,
+        color: kPrimaryColor.withOpacity(0.9), // Exemplo de opacidade na barra inferior
         padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -1071,6 +1131,68 @@ class PostagemScreen extends StatelessWidget {
       ),
     );
   }
+
+  // Função _buildPostCard (Incluída para completar a lógica da tela)
+  Widget _buildPostCard({
+    required String user,
+    required String text,
+    required String profileAsset,
+    bool hasImage = false,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      // 5. Cor semi-transparente para os cards de postagem
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.9),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 20,
+                backgroundImage: AssetImage(profileAsset),
+              ),
+              const SizedBox(width: 10),
+              Text(
+                user,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const Spacer(),
+              const Text('1h atrás', style: TextStyle(color: Colors.grey)),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Text(text),
+          if (hasImage) ...[
+            const SizedBox(height: 10),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              // Usando um placeholder, você pode trocar por uma imagem real de postagem
+              child: Image.asset(
+                'assets/imgs/index.png',
+                height: 150,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ],
+          const SizedBox(height: 10),
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Icon(Icons.favorite_border, size: 20, color: kButtonColor),
+              Icon(Icons.comment_outlined, size: 20, color: kButtonColor),
+              Icon(Icons.share, size: 20, color: kButtonColor),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
 
   // FUNÇÃO AUXILIAR CORRIGIDA: AGORA SUPORTA IMAGENS DE ASSET
   Widget _buildPostCard({
@@ -1158,7 +1280,6 @@ class PostagemScreen extends StatelessWidget {
       ),
     );
   }
-}
 
 // --- TELA DE CORRIDA (EDITAR META) ---
 class CorrerScreen extends StatelessWidget {
@@ -1352,8 +1473,9 @@ class PerfilScreen extends StatelessWidget {
     return InputDecoration(
       labelText: label,
       labelStyle: const TextStyle(color: kButtonColor, fontSize: 18),
+      // MANTENHA O FILL COLOR: Isso garante que o campo de texto ainda se destaque na imagem de fundo.
       filled: true,
-      fillColor: kSecondaryColor, // Azul claro do fundo
+      fillColor: kSecondaryColor.withOpacity(0.8), // Aumentei a opacidade para legibilidade
       contentPadding: const EdgeInsets.symmetric(
         horizontal: 16.0,
         vertical: 12.0,
@@ -1374,13 +1496,14 @@ class PerfilScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Você precisaria de um StatefulWidget para salvar,
-    // mas usaremos StatelessWidget por enquanto para manter o layout
     return Scaffold(
-      backgroundColor: Colors.white,
+      // 1. Torna o corpo da tela visível por trás da AppBar
+      extendBodyBehindAppBar: true,
+
       appBar: AppBar(
         title: const Text('Perfil', style: kPageTitleStyle),
-        backgroundColor: Colors.white,
+        // 2. Remove a cor de fundo para a imagem aparecer atrás
+        backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: kButtonColor),
@@ -1393,80 +1516,87 @@ class PerfilScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          children: [
-            const SizedBox(height: 30),
-
-            // Avatar
-            CircleAvatar(
-              radius: 60,
-              backgroundColor: kPrimaryColor,
-              child: ClipOval(
-                child: Image.asset(
-                  'assets/imgs/biografia.jpg',
-                  fit: BoxFit.cover,
-                  width: 120,
-                  height: 120,
+      body: Container(
+        // 3. Adiciona a Imagem de Fundo
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/imgs/index.png'), // Certifique-se de que o nome está correto
+            fit: BoxFit.cover, // Preenche todo o espaço
+          ),
+        ),
+        child: SingleChildScrollView(
+          // Adiciona padding na parte superior para que o conteúdo não fique sob a AppBar transparente
+          padding: const EdgeInsets.fromLTRB(24.0, 100.0, 24.0, 24.0),
+          child: Column(
+            children: [
+              // Avatar
+              CircleAvatar(
+                radius: 60,
+                backgroundColor: kPrimaryColor,
+                child: ClipOval(
+                  child: Image.asset(
+                    'assets/imgs/biografia.jpg',
+                    fit: BoxFit.cover,
+                    width: 120,
+                    height: 120,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
+              const SizedBox(height: 20),
 
-            // --- CAMPO NOME DE USUÁRIO (EDITÁVEL) ---
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: TextFormField(
-                // Use o valor inicial para mostrar 'Nome do Usuário'
-                initialValue: 'Nome do Usuário',
-                decoration: _perfilInputDecoration('Usuário'),
-                style: const TextStyle(fontSize: 18),
-                onChanged: (value) {
-                  // Aqui você faria algo para salvar o valor digitado
+              // --- CAMPO NOME DE USUÁRIO (EDITÁVEL) ---
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: TextFormField(
+                  initialValue: 'Nome do Usuário',
+                  decoration: _perfilInputDecoration('Usuário'),
+                  style: const TextStyle(fontSize: 18),
+                  onChanged: (value) {
+                    // Aqui você faria algo para salvar o valor digitado
+                  },
+                ),
+              ),
+
+              // --- CAMPO SOBRE MIM (EDITÁVEL, MÚLTIPLAS LINHAS) ---
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: TextFormField(
+                    initialValue: 'Escreva aqui sobre suas metas e paixões!',
+                    decoration: _perfilInputDecoration('Sobre mim'),
+                    style: const TextStyle(fontSize: 18),
+                    maxLines: 5, // Permite 5 linhas
+                    minLines: 3,
+                    onChanged: (value) {
+                      // Aqui você faria algo para salvar o valor digitado
+                    }
+                ),
+              ),
+
+              const SizedBox(height: 30),
+
+              // Botão de Salvar
+              ElevatedButton(
+                onPressed: () {
+                  // Ação para salvar/editar perfil
                 },
-              ),
-            ),
-
-            // --- CAMPO SOBRE MIM (EDITÁVEL, MÚLTIPLAS LINHAS) ---
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: TextFormField(
-                initialValue: 'Escreva aqui sobre suas metas e paixões!',
-                decoration: _perfilInputDecoration('Sobre mim'),
-                style: const TextStyle(fontSize: 18),
-                maxLines: 5, // Permite 5 linhas
-                minLines: 3,
-                onChanged: (value) {
-                  // Aqui você faria algo para salvar o valor digitado
-                },
-              ),
-            ),
-
-            const SizedBox(height: 30),
-
-            // Botão de Salvar
-            ElevatedButton(
-              onPressed: () {
-                // Ação para salvar/editar perfil (precisaria de State para funcionar)
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: kButtonColor,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 30,
-                  vertical: 15,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: kButtonColor,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30,
+                    vertical: 15,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                child: const Text(
+                  'Salvar Alterações',
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
-              child: const Text(
-                'Salvar Alterações',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            const SizedBox(height: 30),
-          ],
+              const SizedBox(height: 30),
+            ],
+          ),
         ),
       ),
     );
