@@ -44,7 +44,11 @@ class PostagemScreen extends StatelessWidget {
                     height: 40,
                     errorBuilder: (context, error, stackTrace) {
                       // Fallback para ícone caso a imagem não carregue
-                      return const Icon(Icons.person, color: kButtonColor, size: 24);
+                      return const Icon(
+                        Icons.person,
+                        color: kButtonColor,
+                        size: 24,
+                      );
                     },
                   ),
                 ),
@@ -75,10 +79,13 @@ class PostagemScreen extends StatelessWidget {
               child: Center(
                 // Imagem mockada para o post (ex: post_livros.jpg)
                 child: Image.asset(
-                  'assets/imgs/post_livros.jpg', 
+                  'assets/imgs/post_livros.jpg',
                   fit: BoxFit.contain,
                   errorBuilder: (context, error, stackTrace) {
-                    return const Text('Placeholder para Livros/Imagem', textAlign: TextAlign.center);
+                    return const Text(
+                      'Placeholder para Livros/Imagem',
+                      textAlign: TextAlign.center,
+                    );
                   },
                 ),
               ),
@@ -112,7 +119,7 @@ class PostagemScreen extends StatelessWidget {
         // 3. Adiciona a Imagem de Fundo (Assumindo 'assets/imgs/index.png' ou similar)
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/imgs/index.png'), 
+            image: AssetImage('assets/imgs/index.png'),
             fit: BoxFit.cover,
           ),
         ),
@@ -141,13 +148,13 @@ class PostagemScreen extends StatelessWidget {
                     border: InputBorder.none,
                     suffixIcon: Icon(Icons.more_horiz, color: kButtonColor),
                     // Define a cor de fundo para ser igual ao container para garantir a transparência
-                    fillColor: Colors.white.withOpacity(0.0), 
+                    fillColor: Colors.white.withOpacity(0.0),
                     filled: true,
                   ),
                 ),
               ),
             ),
-            
+
             // --- LISTA DE POSTAGENS ---
             Expanded(
               child: ListView(
@@ -156,12 +163,13 @@ class PostagemScreen extends StatelessWidget {
                   _buildPostCard(
                     user: 'claramartins',
                     text: 'Hoje corri 5Km !!!',
-                    profileImagePath: 'assets/imgs/CAMYLA.jpg', 
+                    profileImagePath:
+                        'assets/imgs/mascara.jpg', // Usando imagem de máscara
                   ),
                   _buildPostCard(
                     user: 'Usuário2',
                     text: 'Achei esses livros incríveis !!!',
-                    profileImagePath: 'assets/imgs/usuario2_livros.jpg', 
+                    profileImagePath: 'assets/imgs/usuario2_livros.jpg',
                     hasImage: true,
                   ),
                 ],
