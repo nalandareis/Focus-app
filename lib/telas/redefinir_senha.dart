@@ -8,12 +8,10 @@ class RedefinirSenhaScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Usando a cor de fundo do Login/Constantes, se definida, ou Primary
       backgroundColor: kLoginBackground, 
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        // O AppBar deve ter o mesmo fundo da tela
         surfaceTintColor: Colors.transparent, 
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: kButtonColor),
@@ -27,9 +25,16 @@ class RedefinirSenhaScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             const Spacer(flex: 2),
-            const Text('Focus', style: kFocusTitleStyle),
+
+            // ✅ TROCA DO TEXTO PELA LOGO
+            Image.asset(
+              'assets/imgs/logo.png',
+              height: 80,
+            ),
+
             const Spacer(flex: 1),
             const SizedBox(height: 20),
+
             const Text(
               'Redefinição de senha!',
               style: TextStyle(
@@ -57,15 +62,16 @@ class RedefinirSenhaScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            // Campo de texto estilizado
+
             const TextField(
               decoration: InputDecoration(
                 hintText: 'E-mail',
                 fillColor: Colors.white,
               ),
             ),
+
             const Spacer(flex: 2),
-            // Botão ENVIAR
+
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: kButtonColor,
@@ -81,6 +87,7 @@ class RedefinirSenhaScreen extends StatelessWidget {
                 style: TextStyle(color: Colors.white),
               ),
             ),
+
             const SizedBox(height: 20),
             const Icon(Icons.accessibility_new, color: kButtonColor),
             const Spacer(flex: 1),

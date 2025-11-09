@@ -5,11 +5,10 @@ import 'package:focus_app/telas/constants.dart'; // Importa as constantes
 class PostagemScreen extends StatelessWidget {
   const PostagemScreen({super.key});
 
-  // Método auxiliar para construir os cartões de postagem
   Widget _buildPostCard({
     required String user,
     required String text,
-    required String profileImagePath, // Caminho do asset da imagem de perfil
+    required String profileImagePath,
     bool hasImage = false,
   }) {
     return Container(
@@ -32,7 +31,6 @@ class PostagemScreen extends StatelessWidget {
         children: [
           Row(
             children: [
-              // Avatar de Perfil
               CircleAvatar(
                 radius: 20,
                 backgroundColor: kSecondaryColor,
@@ -43,7 +41,6 @@ class PostagemScreen extends StatelessWidget {
                     width: 40,
                     height: 40,
                     errorBuilder: (context, error, stackTrace) {
-                      // Fallback para ícone caso a imagem não carregue
                       return const Icon(
                         Icons.person,
                         color: kButtonColor,
@@ -77,7 +74,6 @@ class PostagemScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Center(
-                // Imagem mockada para o post (ex: post_livros.jpg)
                 child: Image.asset(
                   'assets/imgs/post_livros.jpg',
                   fit: BoxFit.contain,
@@ -99,11 +95,9 @@ class PostagemScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // 1. Torna o corpo da tela visível por trás da AppBar
       extendBodyBehindAppBar: true,
 
       appBar: AppBar(
-        // 2. Remove a cor de fundo da AppBar
         backgroundColor: Colors.transparent,
         elevation: 0,
         surfaceTintColor: Colors.transparent,
@@ -111,12 +105,15 @@ class PostagemScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back, color: kButtonColor),
           onPressed: () => Navigator.pop(context),
         ),
-        // Certifique-se de que o kPageTitleStyle usa uma cor legível (ele usa kButtonColor)
-        title: const Text('Focus', style: kPageTitleStyle),
+
+        // ✅ Substituição do texto pela logo
+        title: Image.asset(
+          'assets/imgs/logo_cadastro2.png',
+          height: 40,
+        ),
         centerTitle: true,
       ),
       body: Container(
-        // 3. Adiciona a Imagem de Fundo (Assumindo 'assets/imgs/index.png' ou similar)
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/imgs/index.png'),
@@ -125,10 +122,7 @@ class PostagemScreen extends StatelessWidget {
         ),
         child: Column(
           children: [
-            // Adiciona um espaçamento para o conteúdo começar abaixo da AppBar transparente
             const SizedBox(height: 100),
-
-            // --- CAMPO DE ESCRITA ---
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Container(
@@ -137,7 +131,6 @@ class PostagemScreen extends StatelessWidget {
                   vertical: 8,
                 ),
                 decoration: BoxDecoration(
-                  // Cor semi-transparente para o campo de texto
                   color: Colors.white.withOpacity(0.85),
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -147,7 +140,6 @@ class PostagemScreen extends StatelessWidget {
                     hintText: 'Escreva algo...',
                     border: InputBorder.none,
                     suffixIcon: Icon(Icons.more_horiz, color: kButtonColor),
-                    // Define a cor de fundo para ser igual ao container para garantir a transparência
                     fillColor: Colors.white.withOpacity(0.0),
                     filled: true,
                   ),
@@ -155,7 +147,6 @@ class PostagemScreen extends StatelessWidget {
               ),
             ),
 
-            // --- LISTA DE POSTAGENS ---
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -163,8 +154,7 @@ class PostagemScreen extends StatelessWidget {
                   _buildPostCard(
                     user: 'claramartins',
                     text: 'Hoje corri 5Km !!!',
-                    profileImagePath:
-                        'assets/imgs/mascara.jpg', // Usando imagem de máscara
+                    profileImagePath: 'assets/imgs/mascara.jpg',
                   ),
                   _buildPostCard(
                     user: 'Usuário2',
@@ -178,7 +168,6 @@ class PostagemScreen extends StatelessWidget {
           ],
         ),
       ),
-      // --- BARRA INFERIOR DE NAVEGAÇÃO ---
       bottomNavigationBar: Container(
         color: kPrimaryColor,
         padding: const EdgeInsets.symmetric(vertical: 16.0),

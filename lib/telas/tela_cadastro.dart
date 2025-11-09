@@ -29,12 +29,12 @@ class CadastroScreen extends StatelessWidget {
             decoration: InputDecoration(
               hintText: hint,
               fillColor: kSecondaryColor,
-              // Estilo de borda padrão herdado do main.dart, 
-              // mas para um estilo mais detalhado como na tela de Login:
+              // Estilo de borda: arredondado sem borda visível
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide.none,
               ),
+              filled: true,
             ),
           ),
         ],
@@ -51,15 +51,19 @@ class CadastroScreen extends StatelessWidget {
         elevation: 0,
         // Substituímos o Text('Focus') pela sua logo no AppBar
         title: Image.asset(
-          // O CAMINHO ESTÁ CORRETO: assets/imgs/logo_cadastro.png
           'assets/imgs/logo_cadastro.png', 
           height: 60, 
           errorBuilder: (context, error, stackTrace) {
-            // Caso a imagem não carregue, voltamos ao Text 'Focus' usando o estilo das constantes
+            // Caso a imagem não carregue, voltamos ao Text 'Focus'
             return const Text('Focus', style: kPageTitleStyle);
           },
         ),
         centerTitle: true,
+        // Adiciona um botão de voltar
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: kButtonColor),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
@@ -76,32 +80,45 @@ class CadastroScreen extends StatelessWidget {
               obscureText: true,
             ),
             const SizedBox(height: 40),
-            Center(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: kButtonColor,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  minimumSize: const Size(double.infinity, 50),
-                ),
-                onPressed: () {
-                  // >>> USANDO ROTA NOMEADA: /metas <<<
-                  Navigator.pushNamed(context, '/metas');
-                },
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Cadastrar',
-                      style: TextStyle(color: Colors.white),
+            
+            // --- Botão e Ícone de Acessibilidade em uma Row Centralizada ---
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center, // Centraliza a Row
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: kButtonColor,
+                    // Define o padding para controlar o tamanho do botão
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 16, horizontal: 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    SizedBox(width: 8),
-                    Icon(Icons.accessibility_new, color: Colors.white),
-                  ],
+                    // Removendo minimumSize.infinity para que o botão não ocupe toda a largura
+                  ),
+                  onPressed: () {
+                    // >>> USANDO ROTA NOMEADA: /metas <<<
+                    Navigator.pushNamed(context, '/metas');
+                  },
+                  child: const Text(
+                    'Cadastrar',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
                 ),
-              ),
+                
+                const SizedBox(width: 20),
+                
+                // Ícone de Acessibilidade fora do botão, como no design
+                const Icon(
+                  Icons.accessibility_new,
+                  color: kButtonColor, // Cor de destaque
+                  size: 30,
+                ),
+              ],
             ),
           ],
         ),

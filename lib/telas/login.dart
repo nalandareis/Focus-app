@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:focus_app/telas/constants.dart';
 
-// Importa as classes necessárias para navegação (se precisar de rotas não nomeadas)
-// Para manter a consistência, usaremos rotas nomeadas (/metas, /cadastro, etc.)
-
-// --- TELA DE LOGIN (ATUALIZADA com Botão Equipe) ---
+// --- TELA DE LOGIN (ATUALIZADA com Botão Equipe e Logo) ---
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
@@ -43,10 +40,10 @@ class LoginScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Spacer(flex: 2),
-            // Logo (Presume-se que o asset existe; se não, use Text('Focus', style: kFocusTitleStyle))
-            // Como não tenho o asset 'assets/imgs/logo.png', vou usar o Text com o estilo:
-            // Image.asset('assets/imgs/logo.png', height: 80), 
-            const Text('Focus', style: kFocusTitleStyle),
+
+            // ✅ LOGO ao invés do texto "Focus"
+            Image.asset('assets/imgs/logo.png', height: 80),
+
             const Spacer(flex: 1),
             const SizedBox(height: 20),
 
@@ -77,7 +74,6 @@ class LoginScreen extends StatelessWidget {
                 minimumSize: const Size(double.infinity, 50),
               ),
               onPressed: () {
-                // >>> USANDO ROTA NOMEADA <<<
                 Navigator.pushNamed(context, '/metas');
               },
               child: const Text(
@@ -95,42 +91,39 @@ class LoginScreen extends StatelessWidget {
             // Botão Esqueceu a senha?
             TextButton(
               onPressed: () {
-                // >>> USANDO ROTA NOMEADA <<<
                 Navigator.pushNamed(context, '/redefinir_senha');
               },
               child: Text(
                 'Esqueceu a senha?',
                 style: TextStyle(
-                  color: kLoginTextColor, // Usando a nova constante
+                  color: kLoginTextColor,
                   fontWeight: FontWeight.w600,
                 ),
               ),
             ),
 
-            const Spacer(flex: 1), 
-            
-            // NOVO BOTÃO: CONHEÇA A EQUIPE
+            const Spacer(flex: 1),
+
+            // Botão: CONHEÇA A EQUIPE
             TextButton(
               onPressed: () {
-                // >>> USANDO ROTA NOMEADA <<<
                 Navigator.pushNamed(context, '/equipe');
               },
               child: Text(
                 'Conheça a Equipe',
                 style: TextStyle(
-                  color: kLoginTextColor, // Usando a nova constante
+                  color: kLoginTextColor,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
 
-            const Spacer(flex: 1), 
-            
+            const Spacer(flex: 1),
+
             // Link Cadastrar-se
             GestureDetector(
               onTap: () {
-                // >>> USANDO ROTA NOMEADA <<<
                 Navigator.pushNamed(context, '/cadastro');
               },
               child: Row(
@@ -139,7 +132,7 @@ class LoginScreen extends StatelessWidget {
                   Text(
                     'Cadastrar-se',
                     style: TextStyle(
-                      color: kLoginTextColor, // Usando a nova constante
+                      color: kLoginTextColor,
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
