@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:focus_app/telas/constants.dart'; // Importa as constantes
+import 'package:focus_app/telas/constants.dart';
 
-// --- TELA DE PERFIL ---
+import '../services/mock_data_service.dart';
+import '../models/usuaria.dart';
+
 class PerfilScreen extends StatelessWidget {
-  const PerfilScreen({super.key});
+  PerfilScreen({super.key});
 
-  // Função auxiliar para criar a decoração estilizada dos campos
+  final MockDataService _service = MockDataService();
+
   InputDecoration _perfilInputDecoration(String label) {
     return InputDecoration(
       labelText: label,
@@ -29,11 +32,11 @@ class PerfilScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Usuaria usuaria = _service.usuariaLogada;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
-
       appBar: AppBar(
-        // ✅ TROCA FEITA AQUI ↓
         title: SizedBox(
           height: 40,
           child: Image.asset('assets/imgs/perfil.png', fit: BoxFit.contain),
@@ -53,7 +56,6 @@ class PerfilScreen extends StatelessWidget {
           ),
         ],
       ),
-
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -61,77 +63,85 @@ class PerfilScreen extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(24.0, 100.0, 24.0, 24.0),
-          child: Center(
-            child: Column(
-              children: [
-                CircleAvatar(
-                  radius: 60,
-                  backgroundColor: kPrimaryColor,
-                  child: ClipOval(
-                    child: Image.asset(
-                      'assets/imgs/biografia.jpg',
-                      fit: BoxFit.cover,
-                      width: 120,
-                      height: 120,
-                      errorBuilder: (context, error, stackTrace) {
-                        return const Icon(
-                          Icons.person,
-                          size: 70,
-                          color: kButtonColor,
-                        );
-                      },
-                    ),
+        // === INÍCIO DA CORREÇÃO DE LAYOUT: USANDO COLUMN E EXPANDED ===
+        child: Column(
+          children: [
+            Expanded( // Força o SingleChildScrollView a ocupar o espaço total vertical
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(24.0, 100.0, 24.0, 24.0),
+                child: Center(
+                  child: Column(
+                    children: [
+                      // IMAGEM DE PERFIL DINÂMICA
+                      CircleAvatar(
+                        radius: 60,
+                        backgroundColor: kPrimaryColor,
+                        child: ClipOval(
+                          child: Image.asset(
+                            usuaria.fotoUrl,
+                            fit: BoxFit.cover,
+                            width: 120,
+                            height: 120,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Icon(
+                                Icons.person,
+                                size: 70,
+                                color: kButtonColor,
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: TextFormField(
+                          initialValue: usuaria.usuario,
+                          decoration: _perfilInputDecoration('Usuário'),
+                          style: const TextStyle(fontSize: 18),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: TextFormField(
+                          initialValue: usuaria.descricao,
+                          decoration: _perfilInputDecoration('Sobre mim'),
+                          style: const TextStyle(fontSize: 18),
+                          maxLines: 5,
+                          minLines: 3,
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: kButtonColor,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 30,
+                            vertical: 15,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          minimumSize: const Size(double.infinity, 50),
+                        ),
+                        child: const Text(
+                          'Salvar Alterações',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      // Adicione um espaço final grande o suficiente para empurrar o conteúdo
+                      // e garantir que o scroll funcione, se necessário.
+                      // Se o conteúdo for menor que a tela, essa altura não será visível.
+                      const SizedBox(height: 30),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 20),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: TextFormField(
-                    initialValue: 'Nome do Usuário',
-                    decoration: _perfilInputDecoration('Usuário'),
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: TextFormField(
-                    initialValue: 'Escreva aqui sobre suas metas e paixões!',
-                    decoration: _perfilInputDecoration('Sobre mim'),
-                    style: const TextStyle(fontSize: 18),
-                    maxLines: 5,
-                    minLines: 3,
-                  ),
-                ),
-
-                const SizedBox(height: 30),
-
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: kButtonColor,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 30,
-                      vertical: 15,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    minimumSize: const Size(double.infinity, 50),
-                  ),
-                  child: const Text(
-                    'Salvar Alterações',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                const SizedBox(height: 30),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
+        // === FIM DA CORREÇÃO DE LAYOUT ===
       ),
     );
   }

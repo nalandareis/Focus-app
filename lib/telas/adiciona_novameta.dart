@@ -5,7 +5,7 @@ import 'package:focus_app/telas/constants.dart'; // Importa as constantes
 class AdicionarMetaScreen extends StatelessWidget {
   const AdicionarMetaScreen({super.key});
 
-  // Método auxiliar para construir campos de texto (movido para dentro da classe)
+  // Método auxiliar para construir campos de texto
   Widget _buildTextField({
     required String label,
     required String hint,
@@ -61,25 +61,39 @@ class AdicionarMetaScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         surfaceTintColor: Colors.transparent,
+        toolbarHeight: 90.0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: kButtonColor),
           onPressed: () => Navigator.pop(context),
         ),
-        // Certifique-se de que o estilo do título (kPageTitleStyle) tem uma cor que se destaca no fundo
-        title: const Text('Nova Meta', style: kPageTitleStyle),
+
+        // Substitui o ícone pela imagem de asset
+        title: Padding( // <-- NOVO: Adiciona Padding aqui
+          padding: const EdgeInsets.only(top: 40.0), // Ajuste este valor (10.0) para a quantidade que você deseja descer.
+          child: Image.asset(
+            'assets/imgs/nova_meta.png',
+            height: 80,
+            color: kButtonColor,
+          ),
+        ), // <-- FIM do Padding
+
         centerTitle: true,
       ),
       body: Container(
-        // 3. Adiciona a Imagem de Fundo (Assumindo que 'assets/imgs/index.png' é o fundo desejado)
+        // CORREÇÃO: Usa BoxConstraints.expand() para forçar o Container
+        // a preencher toda a altura e largura do Scaffold.
+        constraints: const BoxConstraints.expand(),
+
+        // 3. Adiciona a Imagem de Fundo
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/imgs/index.png'),
-            fit: BoxFit.cover,
+            fit: BoxFit.cover, // Mantém o BoxFit.cover para cobrir o espaço
           ),
         ),
         child: SingleChildScrollView(
           // Adiciona padding na parte superior para que o conteúdo não fique sob a AppBar
-          padding: const EdgeInsets.fromLTRB(24.0, 100.0, 24.0, 24.0),
+          padding: const EdgeInsets.fromLTRB(24.0, 130.0, 24.0, 24.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -90,7 +104,11 @@ class AdicionarMetaScreen extends StatelessWidget {
               ),
               _buildTextField(label: 'Prazo:', hint: 'Ex: 31/12/2025'),
               _buildTextField(label: 'Categoria:', hint: 'Ex: Saúde, Estudo...'),
-              const SizedBox(height: 40),
+
+              // ========================================================
+              const SizedBox(height: 70),
+              // =========================================================
+
               Center(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -102,6 +120,7 @@ class AdicionarMetaScreen extends StatelessWidget {
                     minimumSize: const Size(double.infinity, 50),
                   ),
                   onPressed: () {
+                    // Lógica para criar a meta
                     Navigator.pop(context); // Simula a criação da meta e volta
                   },
                   child: const Text(

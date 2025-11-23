@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:focus_app/telas/constants.dart'; // Importa as constantes
 
+// NOVOS IMPORTS: Para usar o Mock Service e o Modelo Meta
+import '../services/mock_data_service.dart';
+import '../models/meta.dart';
+
 // --- TELA DE METAS ---
 class MetasScreen extends StatelessWidget {
-  const MetasScreen({super.key});
+  MetasScreen({super.key});
+
+  // 1. Instancia o serviço de mock para acessar os dados
+  final MockDataService _service = MockDataService();
 
   @override
   Widget build(BuildContext context) {
+    // 2. Obtém a lista de Metas mockadas (Listagem 1)
+    final List<Meta> metas = _service.metasDoUsuario;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
 
@@ -62,23 +72,70 @@ class MetasScreen extends StatelessWidget {
             children: <Widget>[
               const SizedBox(height: 100),
 
-              // ✅ Substituição do texto "METAS" pela logo
+              // Logo (Mantida)
               Center(
                 child: Image.asset('assets/imgs/metasnome.png', height: 80),
               ),
 
               const SizedBox(height: 40),
 
-              _buildMetaItem(
-                context,
-                'Correr',
-                onTap: () => Navigator.pushNamed(context, '/correr'),
+              // --- LISTA DINÂMICA DE METAS (ListView.builder) ---
+              Expanded(
+                child: ListView.builder(
+                  padding: EdgeInsets.zero, // Remove o padding padrão do ListView
+                  itemCount: metas.length, // Usa o tamanho da lista mockada
+                  itemBuilder: (context, index) {
+                    final meta = metas[index];
+
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: GestureDetector(
+                        // Navega para a tela de edição
+                        onTap: () => Navigator.pushNamed(context, '/correr'),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            // Usa a cor de conclusão se meta.concluida for true
+                            color: meta.concluida ? kCorConcluida : Colors.white.withOpacity(0.9),
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.2),
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: CheckboxListTile(
+                            title: Text(
+                              meta.titulo, // DADO DINÂMICO: Título da Meta
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                // Aplica linha se concluída
+                                decoration: meta.concluida ? TextDecoration.lineThrough : null,
+                              ),
+                            ),
+                            subtitle: Text(
+                              meta.categoria, // DADO DINÂMICO: Categoria
+                              style: TextStyle(color: Colors.grey[700]),
+                            ),
+                            value: meta.concluida, // DADO DINÂMICO: Status de conclusão
+                            onChanged: (bool? value) {
+                              // Aqui seria a lógica para marcar/desmarcar a meta
+                            },
+                            activeColor: kButtonColor,
+                            controlAffinity: ListTileControlAffinity.leading,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
-              _buildMetaItem(context, 'Ler'),
-              _buildMetaItem(context, 'Beber 2L água'),
+              // --- FIM DA LISTA DINÂMICA ---
 
-              const Spacer(),
 
+              // Botões inferiores (Mantidos)
               Center(
                 child: Column(
                   children: [
@@ -117,41 +174,5 @@ class MetasScreen extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildMetaItem(
-    BuildContext context,
-    String title, {
-    VoidCallback? onTap,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.9),
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                spreadRadius: 2,
-                blurRadius: 5,
-                offset: const Offset(0, 3),
-              ),
-            ],
-          ),
-          child: CheckboxListTile(
-            title: Text(
-              title,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            value: false,
-            onChanged: (bool? value) {},
-            activeColor: kButtonColor,
-            controlAffinity: ListTileControlAffinity.leading,
-          ),
-        ),
-      ),
-    );
-  }
+// O método _buildMetaItem NÃO é mais necessário e foi removido.
 }

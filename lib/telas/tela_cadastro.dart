@@ -51,7 +51,7 @@ class CadastroScreen extends StatelessWidget {
         elevation: 0,
         // Substituímos o Text('Focus') pela sua logo no AppBar
         title: Image.asset(
-          'assets/imgs/logo_cadastro.png', 
+          'assets/imgs/logo.png',
           height: 60, 
           errorBuilder: (context, error, stackTrace) {
             // Caso a imagem não carregue, voltamos ao Text 'Focus'
